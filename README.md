@@ -2,7 +2,7 @@
 
 A small command-line tool written in Python which takes
 
-meteorological data from [Open-Meteo Weather API](https://open-meteo.com)
+meteorological data from [Open-Meteo Weather API](https://open-meteo.com)\
 soil composition data from [Soilgrids REST API](https://rest.isric.org/)
 
 and checks if the next 7 days are optimal for planting a particular plant specified by the user.
