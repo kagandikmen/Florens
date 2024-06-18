@@ -1,9 +1,9 @@
 # When-to-Plant project main code
 # Created:     2024-01-21
-# Modified:    2024-01-22 (last status: unknown)
+# Modified:    2024-06-18 (last status: working fine)
 # Author:      Kagan Dikmen
 
-import datetime
+# import datetime
 from geopy.geocoders import Nominatim
 import requests
 import soil_moisture as sm
@@ -68,7 +68,7 @@ def main():
     PLANT = input("What do you want to plant?\t").lower()
 
     CITY = input("Where do you want to plant?\t").lower()
-    latlon = Nominatim(user_agent="When-to-Plant").geocode(CITY)
+    latlon = Nominatim(user_agent="Florens").geocode(CITY)
 
     latitude = latlon.latitude;         #float(input("Latitude: "))
     longitude = latlon.longitude;       #float(input("Longitude: "))
