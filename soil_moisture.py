@@ -1,6 +1,6 @@
 # Code taking and interpreting soil data for a location
 # Created:     2024-01-22
-# Modified:    2024-01-22 (last status: unknown)
+# Modified:    2024-06-18 (last status: working fine)
 # Author:      Kagan Dikmen
 
 import requests
@@ -14,7 +14,7 @@ import requests
 # LONGITUDE = float(input("Longitude: "))
 
 # p = geopy.point.Point(LATITUDE, LONGITUDE)
-# r = Nominatim(user_agent = "When-to-Plant").reverse(p)
+# r = Nominatim(user_agent = "Florens").reverse(p)
 # print("This lat-lon pair correspond to: " + str(r))
 
 def latlon2rawsoildata(lat, lon):
