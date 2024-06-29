@@ -5,8 +5,8 @@
 
 # import datetime
 from geopy.geocoders import Nominatim
-from soil_composition import SoilComposition
-from soil_current import SoilCurrent
+from src.soil_composition import SoilComposition
+from src.soil_current import SoilCurrent
 
 # TODO: all times are GMT for the time being, add the capability to display things in local time 
     # (don't know if I will use timestamps anywhere)
