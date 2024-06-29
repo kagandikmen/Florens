@@ -1,4 +1,4 @@
-# Code taking and interpreting soil data for a location
+# Code taking and interpreting soil composition data for a location
 # Created:     2024-01-22
 # Modified:    2024-06-29 (last status: working fine)
 # Author:      Kagan Dikmen
@@ -16,7 +16,7 @@ import requests
 # r = Nominatim(user_agent = "Florens").reverse(p)
 # print("This lat-lon pair correspond to: " + str(r))
 
-class Soil:
+class SoilComposition:
 
     def __init__(self, lat, lon):
         
@@ -182,14 +182,3 @@ class Soil:
             case _:                     optmoisture['15_30cm'] = [1, 1]
 
         return optmoisture
-
-
-# print(latlon2rawsoildata(LATITUDE, LONGITUDE))
-
-# print("-" * 20)
-
-# print(rawsoildata2soiltype(latlon2rawsoildata(LATITUDE, LONGITUDE)))
-
-# print("-" * 20)
-
-# print(soiltype2optimalmoisture(rawsoildata2soiltype(latlon2rawsoildata(LATITUDE, LONGITUDE))))
