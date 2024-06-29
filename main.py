@@ -6,7 +6,7 @@
 # import datetime
 from geopy.geocoders import Nominatim
 import requests
-import soil_moisture as sm
+from soil_moisture import Soil
 
 # TODO: all times are GMT for the time being, add the capability to display things in local time 
     # (don't know if I will use timestamps anywhere)
@@ -14,32 +14,36 @@ import soil_moisture as sm
 
 BASE_URL = "https://api.open-meteo.com/v1/forecast?"
 
-def idealconditions(lat, lon, plant):
+def idealConditions(lat, lon, plant):
 
     try:
-        optmoist = sm.soiltype2optimalmoisture(sm.rawsoildata2soiltype(sm.latlon2rawsoildata(lat, lon)))
+        #optmoist = sm.soiltype2optimalmoisture(sm.rawsoildata2soiltype(sm.latlon2rawsoildata(lat, lon)))
+        localSoil = Soil(lat, lon)
+        localSoil.rawSoilData()
+        localSoilType = localSoil.soilType()
+        optMoist = localSoil.optimalMoisture(localSoilType)
     except:
         print("ERROR: Soilgrids REST API access unsuccessful due to previous errors.")
 
     match plant:
-        case "tulip": return [4.5, 12, optmoist['0_5cm'][0], optmoist['0_5cm'][1]]
-        case "wheat": return [12.5, 25, optmoist['0_5cm'][0], optmoist['0_5cm'][1]]    # https://www.canr.msu.edu/news/planting_wheat_into_dry_soil
-        # TEST: case "wheat": return [-4, 25, 0.05, 0.55]  
-        case _: return [0, 100, 0, 1]
+        case "tulip": return [4.5, 12, optMoist['0_5cm'][0], optMoist['0_5cm'][1]]
+        case "wheat": return [12.5, 25, optMoist['0_5cm'][0], optMoist['0_5cm'][1]]    # https://www.canr.msu.edu/news/planting_wheat_into_dry_soil
+        #case "test": return [-4, 45, 0.05, 0.50]  
+        case _: return [100, 100, 1, 1]
 
-def checkcurrentconditions(idealcondlist, tempdata, moistdata):
-    numgoodtempdata = 0
-    numgoodmoistdata = 0
+def checkCurrentConditions(idealCondList, tempData, moistData):
+    numGoodTempData = 0
+    numGoodMoistData = 0
 
-    for temperature in tempdata:
-        if temperature < idealcondlist[1] and temperature > idealcondlist[0]:
-            numgoodtempdata = numgoodtempdata + 1
+    for temperature in tempData:
+        if temperature < idealCondList[1] and temperature > idealCondList[0]:
+            numGoodTempData = numGoodTempData + 1
 
-    for moisture in moistdata:
-        if moisture < idealcondlist[3] and moisture > idealcondlist[2] :
-            numgoodmoistdata = numgoodmoistdata + 1
+    for moisture in moistData:
+        if moisture < idealCondList[3] and moisture > idealCondList[2] :
+            numGoodMoistData = numGoodMoistData + 1
 
-    return (numgoodtempdata, numgoodmoistdata)
+    return (numGoodTempData, numGoodMoistData)
 
 def interpretcurrentconditions(resulttuple):
     tempcheckresult = resulttuple[0] > 168*0.75
@@ -120,6 +124,6 @@ def main():
     sm27_81_vallist     = response_sm27_81['hourly']['soil_moisture_27_to_81cm']
 
 
-    interpretcurrentconditions(checkcurrentconditions(idealconditions(latitude, longitude, PLANT), st6_vallist, sm3_9_vallist))
+    interpretcurrentconditions(checkCurrentConditions(idealConditions(latitude, longitude, PLANT), st6_vallist, sm3_9_vallist))
 
 main()
