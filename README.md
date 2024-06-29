@@ -14,7 +14,7 @@ requests
 
 ## Current Status
 
-The general structure is completed and works fine. More plant types should be added. Unneeded API accesses can be removed to improve speed.
+The general structure is completed and works fine. More plant types should be added. Uncommented API accesses can be turned on if wished.
 
 ## Contributing
 
