@@ -5,6 +5,7 @@
 
 # import datetime
 from geopy.geocoders import Nominatim
+from src.plant import Plant
 from src.soil_composition import SoilComposition
 from src.soil_current import SoilCurrent
 
@@ -22,11 +23,12 @@ def idealConditions(lat, lon, plant):
     except:
         print("ERROR: Soilgrids REST API access unsuccessful due to previous errors.")
 
-    match plant:
-        case "tulip": return [4.5, 12, optMoist['0_5cm'][0], optMoist['0_5cm'][1]]
-        case "wheat": return [12.5, 25, optMoist['0_5cm'][0], optMoist['0_5cm'][1]]    # https://www.canr.msu.edu/news/planting_wheat_into_dry_soil
-        #case "test": return [-4, 45, 0.05, 0.50]  
-        case _: return [100, 100, 1, 1]
+    p = Plant(plant)
+
+    return [p.optimalTemperature()[0], p.optimalTemperature()[1], optMoist['0_5cm'][0], optMoist['0_5cm'][1]]
+    
+    # TEST:
+    # return [p.optimalTemperature()[0], p.optimalTemperature()[1], 0.05, 0.55]
 
 def checkCurrentConditions(idealCondList, tempData, moistData):
     numGoodTempData = 0
