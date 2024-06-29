@@ -17,7 +17,6 @@ def idealConditions(lat, lon, plant):
 
     try:
         localSoil = SoilComposition(lat, lon)
-        localSoil.rawSoilData()
         localSoilType = localSoil.soilType()
         optMoist = localSoil.optimalMoisture(localSoilType)
     except:
