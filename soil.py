@@ -1,6 +1,6 @@
 # Code taking and interpreting soil data for a location
 # Created:     2024-01-22
-# Modified:    2024-06-18 (last status: working fine)
+# Modified:    2024-06-29 (last status: working fine)
 # Author:      Kagan Dikmen
 
 import requests

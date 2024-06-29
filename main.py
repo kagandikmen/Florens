@@ -1,12 +1,12 @@
 # When-to-Plant project main code
 # Created:     2024-01-21
-# Modified:    2024-06-18 (last status: working fine)
+# Modified:    2024-06-29 (last status: working fine)
 # Author:      Kagan Dikmen
 
 # import datetime
 from geopy.geocoders import Nominatim
 import requests
-from soil_moisture import Soil
+from soil import Soil
 
 # TODO: all times are GMT for the time being, add the capability to display things in local time 
     # (don't know if I will use timestamps anywhere)
@@ -17,7 +17,6 @@ BASE_URL = "https://api.open-meteo.com/v1/forecast?"
 def idealConditions(lat, lon, plant):
 
     try:
-        #optmoist = sm.soiltype2optimalmoisture(sm.rawsoildata2soiltype(sm.latlon2rawsoildata(lat, lon)))
         localSoil = Soil(lat, lon)
         localSoil.rawSoilData()
         localSoilType = localSoil.soilType()
