@@ -1,43 +1,43 @@
 # Florens project main code
 # Created:     2024-01-21
-# Modified:    2024-06-29 (last status: working fine)
+# Modified:    2024-06-30 (last status: working fine)
 # Author:      Kagan Dikmen
 
-# import datetime
 from geopy.geocoders import Nominatim
+from src.plant import Plant
 from src.soil_composition import SoilComposition
 from src.soil_current import SoilCurrent
-
-# TODO: all times are GMT for the time being, add the capability to display things in local time 
-    # (don't know if I will use timestamps anywhere)
-# TODO: add a SQL database for the plant data
 
 def idealConditions(lat, lon, plant):
 
     try:
         localSoil = SoilComposition(lat, lon)
-        localSoil.rawSoilData()
-        localSoilType = localSoil.soilType()
-        optMoist = localSoil.optimalMoisture(localSoilType)
+        localSoil.soilType()
+        localSoil.optimalMoisture()
     except:
         print("ERROR: Soilgrids REST API access unsuccessful due to previous errors.")
 
-    match plant:
-        case "tulip": return [4.5, 12, optMoist['0_5cm'][0], optMoist['0_5cm'][1]]
-        case "wheat": return [12.5, 25, optMoist['0_5cm'][0], optMoist['0_5cm'][1]]    # https://www.canr.msu.edu/news/planting_wheat_into_dry_soil
-        #case "test": return [-4, 45, 0.05, 0.50]  
-        case _: return [100, 100, 1, 1]
+    p = Plant(plant)
+    return [p.optimalTemperature()[0], p.optimalTemperature()[1], localSoil.optMoisture['0_5cm'][0], localSoil.optMoisture['0_5cm'][1]]
+    
+    # TEST:
+    # return [p.optimalTemperature()[0], p.optimalTemperature()[1], 0.05, 0.55]
 
 def checkCurrentConditions(idealCondList, tempData, moistData):
     numGoodTempData = 0
     numGoodMoistData = 0
 
+    minTemp = idealCondList[0]
+    maxTemp = idealCondList[1]
+    minMoist = idealCondList[2]
+    maxMoist = idealCondList[3]
+
     for temperature in tempData:
-        if temperature < idealCondList[1] and temperature > idealCondList[0]:
+        if temperature < maxTemp and temperature > minTemp:
             numGoodTempData = numGoodTempData + 1
 
     for moisture in moistData:
-        if moisture < idealCondList[3] and moisture > idealCondList[2] :
+        if moisture < maxMoist and moisture > minMoist:
             numGoodMoistData = numGoodMoistData + 1
 
     return (numGoodTempData, numGoodMoistData)
