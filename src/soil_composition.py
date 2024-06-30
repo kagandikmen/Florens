@@ -48,6 +48,8 @@ class SoilComposition:
                 lonE = lon + 0.05
                 lonW = lon - 0.05
 
+                noAccessTime = 0
+
                 TEMPURL_N = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=" + str("%.2f" % lon) + "&lat=" + str("%.2f" % latN) + "&property=clay&property=sand&property=silt&depth=0-5cm&depth=5-15cm&depth=15-30cm&value=Q0.5"
                 TEMPURL_S = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=" + str("%.2f" % lon) + "&lat=" + str("%.2f" % latS) + "&property=clay&property=sand&property=silt&depth=0-5cm&depth=5-15cm&depth=15-30cm&value=Q0.5"
                 TEMPURL_E = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=" + str("%.2f" % lonE) + "&lat=" + str("%.2f" % lat) + "&property=clay&property=sand&property=silt&depth=0-5cm&depth=5-15cm&depth=15-30cm&value=Q0.5"
@@ -62,8 +64,10 @@ class SoilComposition:
                     clay_data_N = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_N = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_N = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
+                    noAccessTime = noAccessTime + 1
+                
                 try:
-                    response_S = requests.get(TEMPURL_N).json()
+                    response_S = requests.get(TEMPURL_S).json()
                     clay_data_S = response_S['properties']['layers'][0]['depths']
                     sand_data_S = response_S['properties']['layers'][1]['depths']
                     silt_data_S = response_S['properties']['layers'][2]['depths']
@@ -71,9 +75,10 @@ class SoilComposition:
                     clay_data_S = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_S = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_S = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
+                    noAccessTime = noAccessTime + 1
                 
                 try:
-                    response_E = requests.get(TEMPURL_N).json()
+                    response_E = requests.get(TEMPURL_E).json()
                     clay_data_E = response_E['properties']['layers'][0]['depths']
                     sand_data_E = response_E['properties']['layers'][1]['depths']
                     silt_data_E = response_E['properties']['layers'][2]['depths']
@@ -81,9 +86,10 @@ class SoilComposition:
                     clay_data_E = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_E = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_E = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
-                
+                    noAccessTime = noAccessTime + 1
+
                 try:
-                    response_W = requests.get(TEMPURL_N).json()
+                    response_W = requests.get(TEMPURL_W).json()
                     clay_data_W = response_W['properties']['layers'][0]['depths']
                     sand_data_W = response_W['properties']['layers'][1]['depths']
                     silt_data_W = response_W['properties']['layers'][2]['depths']
@@ -91,18 +97,19 @@ class SoilComposition:
                     clay_data_W = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_W = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_W = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
+                    noAccessTime = noAccessTime + 1
 
-                self.clay_p_0_5cm    = (clay_data_N[0]['values']['Q0.5'] + clay_data_S[0]['values']['Q0.5'] + clay_data_E[0]['values']['Q0.5'] + clay_data_W[0]['values']['Q0.5']) / 4000
-                self.clay_p_5_15cm   = (clay_data_N[1]['values']['Q0.5'] + clay_data_S[1]['values']['Q0.5'] + clay_data_E[1]['values']['Q0.5'] + clay_data_W[1]['values']['Q0.5']) / 4000
-                self.clay_p_15_30cm  = (clay_data_N[2]['values']['Q0.5'] + clay_data_S[2]['values']['Q0.5'] + clay_data_E[2]['values']['Q0.5'] + clay_data_W[2]['values']['Q0.5']) / 4000
+                self.clay_p_0_5cm    = (clay_data_N[0]['values']['Q0.5'] + clay_data_S[0]['values']['Q0.5'] + clay_data_E[0]['values']['Q0.5'] + clay_data_W[0]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.clay_p_5_15cm   = (clay_data_N[1]['values']['Q0.5'] + clay_data_S[1]['values']['Q0.5'] + clay_data_E[1]['values']['Q0.5'] + clay_data_W[1]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.clay_p_15_30cm  = (clay_data_N[2]['values']['Q0.5'] + clay_data_S[2]['values']['Q0.5'] + clay_data_E[2]['values']['Q0.5'] + clay_data_W[2]['values']['Q0.5']) / (4000 - noAccessTime*1000)
             
-                self.sand_p_0_5cm    = (sand_data_N[0]['values']['Q0.5'] + sand_data_S[0]['values']['Q0.5'] + sand_data_E[0]['values']['Q0.5'] + sand_data_W[0]['values']['Q0.5']) / 4000
-                self.sand_p_5_15cm   = (sand_data_N[1]['values']['Q0.5'] + sand_data_S[1]['values']['Q0.5'] + sand_data_E[1]['values']['Q0.5'] + sand_data_W[1]['values']['Q0.5']) / 4000
-                self.sand_p_15_30cm  = (sand_data_N[2]['values']['Q0.5'] + sand_data_S[2]['values']['Q0.5'] + sand_data_E[2]['values']['Q0.5'] + sand_data_W[2]['values']['Q0.5']) / 4000
+                self.sand_p_0_5cm    = (sand_data_N[0]['values']['Q0.5'] + sand_data_S[0]['values']['Q0.5'] + sand_data_E[0]['values']['Q0.5'] + sand_data_W[0]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.sand_p_5_15cm   = (sand_data_N[1]['values']['Q0.5'] + sand_data_S[1]['values']['Q0.5'] + sand_data_E[1]['values']['Q0.5'] + sand_data_W[1]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.sand_p_15_30cm  = (sand_data_N[2]['values']['Q0.5'] + sand_data_S[2]['values']['Q0.5'] + sand_data_E[2]['values']['Q0.5'] + sand_data_W[2]['values']['Q0.5']) / (4000 - noAccessTime*1000)
             
-                self.silt_p_0_5cm    = (silt_data_N[0]['values']['Q0.5'] + silt_data_S[0]['values']['Q0.5'] + silt_data_E[0]['values']['Q0.5'] + silt_data_W[0]['values']['Q0.5']) / 4000
-                self.silt_p_5_15cm   = (silt_data_N[1]['values']['Q0.5'] + silt_data_S[1]['values']['Q0.5'] + silt_data_E[1]['values']['Q0.5'] + silt_data_W[1]['values']['Q0.5']) / 4000
-                self.silt_p_15_30cm  = (silt_data_N[2]['values']['Q0.5'] + silt_data_S[2]['values']['Q0.5'] + silt_data_E[2]['values']['Q0.5'] + silt_data_W[2]['values']['Q0.5']) / 4000
+                self.silt_p_0_5cm    = (silt_data_N[0]['values']['Q0.5'] + silt_data_S[0]['values']['Q0.5'] + silt_data_E[0]['values']['Q0.5'] + silt_data_W[0]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.silt_p_5_15cm   = (silt_data_N[1]['values']['Q0.5'] + silt_data_S[1]['values']['Q0.5'] + silt_data_E[1]['values']['Q0.5'] + silt_data_W[1]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.silt_p_15_30cm  = (silt_data_N[2]['values']['Q0.5'] + silt_data_S[2]['values']['Q0.5'] + silt_data_E[2]['values']['Q0.5'] + silt_data_W[2]['values']['Q0.5']) / (4000 - noAccessTime*1000)
 
             except:
                 latN = lat + 0.5
@@ -111,6 +118,8 @@ class SoilComposition:
                 lonE = lon + 0.5
                 lonW = lon - 0.5
 
+                noAccessTime = 0
+
                 TEMPURL_N = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=" + str("%.2f" % lon) + "&lat=" + str("%.2f" % latN) + "&property=clay&property=sand&property=silt&depth=0-5cm&depth=5-15cm&depth=15-30cm&value=Q0.5"
                 TEMPURL_S = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=" + str("%.2f" % lon) + "&lat=" + str("%.2f" % latS) + "&property=clay&property=sand&property=silt&depth=0-5cm&depth=5-15cm&depth=15-30cm&value=Q0.5"
                 TEMPURL_E = "https://rest.isric.org/soilgrids/v2.0/properties/query?lon=" + str("%.2f" % lonE) + "&lat=" + str("%.2f" % lat) + "&property=clay&property=sand&property=silt&depth=0-5cm&depth=5-15cm&depth=15-30cm&value=Q0.5"
@@ -125,8 +134,10 @@ class SoilComposition:
                     clay_data_N = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_N = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_N = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
+                    noAccessTime = noAccessTime + 1
+
                 try:
-                    response_S = requests.get(TEMPURL_N).json()
+                    response_S = requests.get(TEMPURL_S).json()
                     clay_data_S = response_S['properties']['layers'][0]['depths']
                     sand_data_S = response_S['properties']['layers'][1]['depths']
                     silt_data_S = response_S['properties']['layers'][2]['depths']
@@ -134,9 +145,10 @@ class SoilComposition:
                     clay_data_S = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_S = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_S = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
+                    noAccessTime = noAccessTime + 1
                 
                 try:
-                    response_E = requests.get(TEMPURL_N).json()
+                    response_E = requests.get(TEMPURL_E).json()
                     clay_data_E = response_E['properties']['layers'][0]['depths']
                     sand_data_E = response_E['properties']['layers'][1]['depths']
                     silt_data_E = response_E['properties']['layers'][2]['depths']
@@ -144,9 +156,10 @@ class SoilComposition:
                     clay_data_E = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_E = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_E = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
+                    noAccessTime = noAccessTime + 1
                 
                 try:
-                    response_W = requests.get(TEMPURL_N).json()
+                    response_W = requests.get(TEMPURL_W).json()
                     clay_data_W = response_W['properties']['layers'][0]['depths']
                     sand_data_W = response_W['properties']['layers'][1]['depths']
                     silt_data_W = response_W['properties']['layers'][2]['depths']
@@ -154,18 +167,19 @@ class SoilComposition:
                     clay_data_W = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}] 
                     sand_data_W = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
                     silt_data_W = [{'range': {'top_depth': 0, 'bottom_depth': 5, 'unit_depth': 'cm'}, 'label': '0-5cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 5, 'bottom_depth': 15, 'unit_depth': 'cm'}, 'label': '5-15cm', 'values': {'Q0.5': 0}}, {'range': {'top_depth': 15, 'bottom_depth': 30, 'unit_depth': 'cm'}, 'label': '15-30cm', 'values': {'Q0.5': 0}}]
+                    noAccessTime = noAccessTime + 1
             
-                self.clay_p_0_5cm    = (clay_data_N[0]['values']['Q0.5'] + clay_data_S[0]['values']['Q0.5'] + clay_data_E[0]['values']['Q0.5'] + clay_data_W[0]['values']['Q0.5']) / 4000
-                self.clay_p_5_15cm   = (clay_data_N[1]['values']['Q0.5'] + clay_data_S[1]['values']['Q0.5'] + clay_data_E[1]['values']['Q0.5'] + clay_data_W[1]['values']['Q0.5']) / 4000
-                self.clay_p_15_30cm  = (clay_data_N[2]['values']['Q0.5'] + clay_data_S[2]['values']['Q0.5'] + clay_data_E[2]['values']['Q0.5'] + clay_data_W[2]['values']['Q0.5']) / 4000
+                self.clay_p_0_5cm    = (clay_data_N[0]['values']['Q0.5'] + clay_data_S[0]['values']['Q0.5'] + clay_data_E[0]['values']['Q0.5'] + clay_data_W[0]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.clay_p_5_15cm   = (clay_data_N[1]['values']['Q0.5'] + clay_data_S[1]['values']['Q0.5'] + clay_data_E[1]['values']['Q0.5'] + clay_data_W[1]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.clay_p_15_30cm  = (clay_data_N[2]['values']['Q0.5'] + clay_data_S[2]['values']['Q0.5'] + clay_data_E[2]['values']['Q0.5'] + clay_data_W[2]['values']['Q0.5']) / (4000 - noAccessTime*1000)
             
-                self.sand_p_0_5cm    = (sand_data_N[0]['values']['Q0.5'] + sand_data_S[0]['values']['Q0.5'] + sand_data_E[0]['values']['Q0.5'] + sand_data_W[0]['values']['Q0.5']) / 4000
-                self.sand_p_5_15cm   = (sand_data_N[1]['values']['Q0.5'] + sand_data_S[1]['values']['Q0.5'] + sand_data_E[1]['values']['Q0.5'] + sand_data_W[1]['values']['Q0.5']) / 4000
-                self.sand_p_15_30cm  = (sand_data_N[2]['values']['Q0.5'] + sand_data_S[2]['values']['Q0.5'] + sand_data_E[2]['values']['Q0.5'] + sand_data_W[2]['values']['Q0.5']) / 4000
+                self.sand_p_0_5cm    = (sand_data_N[0]['values']['Q0.5'] + sand_data_S[0]['values']['Q0.5'] + sand_data_E[0]['values']['Q0.5'] + sand_data_W[0]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.sand_p_5_15cm   = (sand_data_N[1]['values']['Q0.5'] + sand_data_S[1]['values']['Q0.5'] + sand_data_E[1]['values']['Q0.5'] + sand_data_W[1]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.sand_p_15_30cm  = (sand_data_N[2]['values']['Q0.5'] + sand_data_S[2]['values']['Q0.5'] + sand_data_E[2]['values']['Q0.5'] + sand_data_W[2]['values']['Q0.5']) / (4000 - noAccessTime*1000)
             
-                self.silt_p_0_5cm    = (silt_data_N[0]['values']['Q0.5'] + silt_data_S[0]['values']['Q0.5'] + silt_data_E[0]['values']['Q0.5'] + silt_data_W[0]['values']['Q0.5']) / 4000
-                self.silt_p_5_15cm   = (silt_data_N[1]['values']['Q0.5'] + silt_data_S[1]['values']['Q0.5'] + silt_data_E[1]['values']['Q0.5'] + silt_data_W[1]['values']['Q0.5']) / 4000
-                self.silt_p_15_30cm  = (silt_data_N[2]['values']['Q0.5'] + silt_data_S[2]['values']['Q0.5'] + silt_data_E[2]['values']['Q0.5'] + silt_data_W[2]['values']['Q0.5']) / 4000
+                self.silt_p_0_5cm    = (silt_data_N[0]['values']['Q0.5'] + silt_data_S[0]['values']['Q0.5'] + silt_data_E[0]['values']['Q0.5'] + silt_data_W[0]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.silt_p_5_15cm   = (silt_data_N[1]['values']['Q0.5'] + silt_data_S[1]['values']['Q0.5'] + silt_data_E[1]['values']['Q0.5'] + silt_data_W[1]['values']['Q0.5']) / (4000 - noAccessTime*1000)
+                self.silt_p_15_30cm  = (silt_data_N[2]['values']['Q0.5'] + silt_data_S[2]['values']['Q0.5'] + silt_data_E[2]['values']['Q0.5'] + silt_data_W[2]['values']['Q0.5']) / (4000 - noAccessTime*1000)
 
     def soilType(self):
         
