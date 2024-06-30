@@ -623,7 +623,7 @@ class SoilComposition:
                                     self.silt_p_15_30cm  = (silt_data_N[2]['values']['Q0.5'] + silt_data_S[2]['values']['Q0.5'] + silt_data_E[2]['values']['Q0.5'] + silt_data_W[2]['values']['Q0.5'] + silt_data_NW[2]['values']['Q0.5'] + silt_data_SW[2]['values']['Q0.5'] + silt_data_NE[2]['values']['Q0.5'] + silt_data_SE[2]['values']['Q0.5']) / (8000 - noAccessTime*1000)
                                 
                                 except:
-                                    raise ValueError("ValueError: All four vicinity checks failed, the area you entered must be corresponding to a big residential area or water body.")
+                                    raise ValueError("All vicinity checks failed, the area you entered must be corresponding to a big residential area or water body.")
 
 
     def soilType(self):

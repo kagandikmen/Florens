@@ -14,11 +14,13 @@ def idealConditions(lat, lon, plant):
         localSoil = SoilComposition(lat, lon)
         localSoil.soilType()
         localSoil.optimalMoisture()
-    except:
-        print("ERROR: Soilgrids REST API access unsuccessful due to previous errors.")
 
-    p = Plant(plant)
-    return [p.optimalTemperature()[0], p.optimalTemperature()[1], localSoil.optMoisture['0_5cm'][0], localSoil.optMoisture['0_5cm'][1]]
+        p = Plant(plant)
+        return [p.optimalTemperature()[0], p.optimalTemperature()[1], localSoil.optMoisture['0_5cm'][0], localSoil.optMoisture['0_5cm'][1]]
+    except:
+        raise ValueError("No soil composition data retrievable for the location entered.")
+
+    
     
     # TEST:
     # return [p.optimalTemperature()[0], p.optimalTemperature()[1], 0.05, 0.55]

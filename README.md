@@ -14,7 +14,7 @@ requests
 
 ## Current Status of the Project
 
-The general structure is completed and works fine. Uncommented API accesses can be turned on if wished.
+The general structure is completed and works fine. Commented API accesses can be turned on if wished.
 
 ## Known Issues
 
